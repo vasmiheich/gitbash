@@ -112,7 +112,7 @@ jobs:
       group: windows-build-${{ github.ref }}
       cancel-in-progress: ${{ needs.ci-config.outputs.skip_concurrent == 'yes' }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: git-for-windows/setup-git-for-windows-sdk@v1
     - name: build
       shell: bash
@@ -176,10 +176,10 @@ jobs:
       group: vs-build-${{ github.ref }}-${{ matrix.arch }}
       cancel-in-progress: ${{ needs.ci-config.outputs.skip_concurrent == 'yes' }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: git-for-windows/setup-git-for-windows-sdk@v1
     - name: initialize vcpkg
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: 'microsoft/vcpkg'
         path: 'compat/vcbuild/vcpkg'
@@ -261,7 +261,7 @@ jobs:
       group: windows-meson-build-${{ github.ref }}
       cancel-in-progress: ${{ needs.ci-config.outputs.skip_concurrent == 'yes' }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: actions/setup-python@v5
     - name: Set up dependencies
       shell: pwsh
@@ -289,7 +289,7 @@ jobs:
       group: windows-meson-test-${{ matrix.nr }}-${{ github.ref }}
       cancel-in-progress: ${{ needs.ci-config.outputs.skip_concurrent == 'yes' }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: actions/setup-python@v5
     - name: Set up dependencies
       shell: pwsh
@@ -334,7 +334,7 @@ jobs:
       TEST_OUTPUT_DIRECTORY: ${{github.workspace}}/t
     runs-on: ${{matrix.vector.pool}}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: ci/install-dependencies.sh
     - run: ci/run-build-and-tests.sh
     - name: print test failures
@@ -354,7 +354,7 @@ jobs:
       CC: clang
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: ci/install-dependencies.sh
     - run: ci/run-build-and-minimal-fuzzers.sh
   dockerized:
@@ -416,7 +416,7 @@ jobs:
     - name: prepare libc6 for actions
       if: matrix.vector.jobname == 'linux32'
       run: apt -q update && apt -q -y install libc6-amd64 lib64stdc++6
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: ci/install-dependencies.sh
     - run: useradd builder --create-home
     - run: chown -R builder .
@@ -440,7 +440,7 @@ jobs:
       group: static-analysis-${{ github.ref }}
       cancel-in-progress: ${{ needs.ci-config.outputs.skip_concurrent == 'yes' }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: ci/install-dependencies.sh
     - run: ci/run-static-analysis.sh
     - run: ci/check-directional-formatting.bash
@@ -463,7 +463,7 @@ jobs:
         artifact: sparse-20.04
     - name: Install the current `sparse` package
       run: sudo dpkg -i sparse-20.04/sparse_*.deb
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Install other dependencies
       run: ci/install-dependencies.sh
     - run: make sparse
@@ -478,6 +478,6 @@ jobs:
       jobname: Documentation
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: ci/install-dependencies.sh
     - run: ci/test-documentation.sh
